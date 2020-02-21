@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/pages/home/wx_host_item.dart';
 import 'package:flutter_wanandroid/pages/project_page.dart';
 import 'package:flutter_wanandroid/pages/home_page.dart';
 import 'package:flutter_wanandroid/pages/my_page.dart';
@@ -11,7 +12,7 @@ class NavigatorBar extends StatefulWidget {
 }
 
 class NavigatorState extends State<NavigatorBar> {
-  static const titles = ['首页', '分类', '项目', '我的'];
+  static const titles = ['首页', '分类', '项目', '公众号'];
 
   var _currentIndex = 0;
 
@@ -28,6 +29,12 @@ class NavigatorState extends State<NavigatorBar> {
                 icon: Icon(Icons.search),
                 onPressed: () {
                   showSearch(context: context, delegate: SearchBarDelegate());
+                }),
+            IconButton(
+                icon: Icon(Icons.account_circle),
+                onPressed: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => MyPage()));
                 })
           ],
         ),
@@ -42,7 +49,7 @@ class NavigatorState extends State<NavigatorBar> {
             HomePage(),
             NavigatorPage(),
             ProjectPage(),
-            MyPage()
+            WxHostPage()
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -79,10 +86,10 @@ class NavigatorState extends State<NavigatorBar> {
                   )),
               BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.category,
+                    Icons.apps,
                     color: Colors.black,
                   ),
-                  activeIcon: Icon(Icons.category, color: Colors.blue),
+                  activeIcon: Icon(Icons.apps, color: Colors.blue),
                   title: Text(
                     titles[2],
                     style: TextStyle(
@@ -90,10 +97,10 @@ class NavigatorState extends State<NavigatorBar> {
                   )),
               BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.account_circle,
+                    Icons.assessment,
                     color: Colors.black,
                   ),
-                  activeIcon: Icon(Icons.account_circle, color: Colors.blue),
+                  activeIcon: Icon(Icons.assessment, color: Colors.blue),
                   title: Text(
                     titles[3],
                     style: TextStyle(

@@ -14,8 +14,6 @@ class WxHostState extends State<WxHostPage>
     with SingleTickerProviderStateMixin {
   List<Data> _wxHosts = List<Data>();
 
-  var _scrollController = ScrollController();
-
   List<Tab> _tabs = List<Tab>();
 
   TabController _tabController;
@@ -23,10 +21,6 @@ class WxHostState extends State<WxHostPage>
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {}
-    });
     _getHosts();
   }
 
@@ -46,33 +40,46 @@ class WxHostState extends State<WxHostPage>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          height: 30,
-          child: TabBar(
-            tabs: _tabs,
-            isScrollable: true,
-            labelColor: Colors.blue,
-            indicator: BoxDecoration(),
-            unselectedLabelColor: Colors.black,
-            controller: _tabController,
-          ),
-        ),
-        Divider(
-          height: 0.5,
-          color: Color(0x50000000),
-        ),
-        Expanded(
-            child: TabBarView(
-                controller: _tabController,
-                children: _wxHosts
-                    .map((wxHost) => WxArticleListPage(
-                          hostId: wxHost.id,
-                        ))
-                    .toList()))
-      ],
-    );
+    return _tabs.length == 0
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : Column(
+            children: <Widget>[
+              Container(
+                child: TabBar(
+                  tabs: _tabs,
+                  isScrollable: true,
+                  labelColor: Colors.blue,
+                  indicator: BoxDecoration(),
+                  unselectedLabelStyle:
+                      TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+                  labelStyle:
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  unselectedLabelColor: Colors.black,
+                  controller: _tabController,
+                ),
+              ),
+              Divider(
+                height: 0.5,
+                color: Color(0x50000000),
+              ),
+              Expanded(
+                  child: TabBarView(
+                      controller: _tabController,
+                      children: _wxHosts
+                          .map((wxHost) => WxArticleListPage(
+                                hostId: wxHost.id,
+                              ))
+                          .toList()))
+            ],
+          );
   }
 }

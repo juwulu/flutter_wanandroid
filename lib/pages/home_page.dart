@@ -21,9 +21,6 @@ class HomePageState extends State<HomePage>
     ),
     Tab(
       text: '项目',
-    ),
-    Tab(
-      text: '公众号',
     )
   ];
 
@@ -71,8 +68,7 @@ class HomePageState extends State<HomePage>
             ),
             ArticleListPage(
               type: 'project',
-            ),
-            WxHostPage()
+            )
           ],
           controller: _tabController,
         ),
