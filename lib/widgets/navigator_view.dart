@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wanandroid/pages/home/wx_host_item.dart';
-import 'package:flutter_wanandroid/pages/project_page.dart';
-import 'package:flutter_wanandroid/pages/home_page.dart';
-import 'package:flutter_wanandroid/pages/my_page.dart';
 import 'package:flutter_wanandroid/pages/category_page.dart';
+import 'package:flutter_wanandroid/pages/home/wx_host_item.dart';
+import 'package:flutter_wanandroid/pages/home_page.dart';
+import 'package:flutter_wanandroid/pages/login/login_page.dart';
+import 'package:flutter_wanandroid/pages/my_page.dart';
+import 'package:flutter_wanandroid/pages/project_page.dart';
 import 'package:flutter_wanandroid/widgets/search/search_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NavigatorBar extends StatefulWidget {
   @override
@@ -14,9 +16,17 @@ class NavigatorBar extends StatefulWidget {
 class NavigatorState extends State<NavigatorBar> {
   static const titles = ['首页', '分类', '项目', '公众号'];
 
+  bool _isLogin = false;
+
   var _currentIndex = 0;
 
   var _pageController = PageController(initialPage: 0);
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLoginState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +44,9 @@ class NavigatorState extends State<NavigatorBar> {
                 icon: Icon(Icons.account_circle),
                 onPressed: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => MyPage()));
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => _isLogin ? MyPage() : LoginPage()));
                 })
           ],
         ),
@@ -107,5 +119,12 @@ class NavigatorState extends State<NavigatorBar> {
                         color: _currentIndex == 3 ? Colors.blue : Colors.black),
                   ))
             ]));
+  }
+
+  void _loadLoginState() async {
+    var sp = await SharedPreferences.getInstance();
+    setState(() {
+      _isLogin = sp.getBool('isLogin');
+    });
   }
 }
