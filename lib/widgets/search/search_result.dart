@@ -64,6 +64,8 @@ class SearchResultState extends State<SearchResultView>
             context,
             MaterialPageRoute(
                 builder: (_) => Browser(
+                      isCollected: _article.collect,
+                      id: _article.id,
                       url: _article.link,
                       title: highlightTitle(_article.title),
                     )));

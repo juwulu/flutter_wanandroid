@@ -80,6 +80,8 @@ class ProjectListState extends State<ProjectListPage>
             context,
             MaterialPageRoute(
                 builder: (_) => Browser(
+                      isCollected: _article.collect,
+                      id: _article.id,
                       url: _article.link,
                       title: _article.title,
                     )));

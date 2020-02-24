@@ -71,6 +71,8 @@ class ArticleListState extends State<ArticleListPage>
             context,
             MaterialPageRoute(
                 builder: (_) => Browser(
+                      isCollected: _article.collect,
+                      id: _article.id,
                       url: _article.link,
                       title: _article.title,
                     )));

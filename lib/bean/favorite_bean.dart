@@ -147,14 +147,14 @@ class Datas {
   }
 }
 
-class RemoveBean {
+class CollectBean {
   Null data;
   int errorCode;
   String errorMsg;
 
-  RemoveBean({this.data, this.errorCode, this.errorMsg});
+  CollectBean({this.data, this.errorCode, this.errorMsg});
 
-  RemoveBean.fromJson(Map<String, dynamic> json) {
+  CollectBean.fromJson(Map<String, dynamic> json) {
     data = json['data'];
     errorCode = json['errorCode'];
     errorMsg = json['errorMsg'];

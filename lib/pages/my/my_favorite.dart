@@ -71,6 +71,8 @@ class MyFavoriteState extends State<MyFavoritePage> {
             context,
             MaterialPageRoute(
                 builder: (_) => Browser(
+                      isCollected: true,
+                      id: _article.id,
                       url: _article.link,
                       title: _article.title,
                     )));
@@ -140,8 +142,8 @@ class MyFavoriteState extends State<MyFavoritePage> {
     dio.interceptors.add(CookieManager(PersistCookieJar(dir: directory.path)));
     Response response = await dio.post(
         'https://www.wanandroid.com/lg/uncollect/${article.id}/json?originId=-1');
-    RemoveBean removeBean =
-        RemoveBean.fromJson(json.decode(response.toString()));
+    CollectBean removeBean =
+        CollectBean.fromJson(json.decode(response.toString()));
     if (removeBean.errorCode == 0) {
       setState(() {
         _favorites.remove(article);
