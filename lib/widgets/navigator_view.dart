@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/data_manager.dart';
 import 'package:flutter_wanandroid/pages/category_page.dart';
 import 'package:flutter_wanandroid/pages/home/wx_host_item.dart';
 import 'package:flutter_wanandroid/pages/home_page.dart';
@@ -13,10 +14,8 @@ class NavigatorBar extends StatefulWidget {
   NavigatorState createState() => NavigatorState();
 }
 
-class NavigatorState extends State<NavigatorBar> with WidgetsBindingObserver {
+class NavigatorState extends State<NavigatorBar> {
   static const titles = ['首页', '分类', '项目', '公众号'];
-
-  bool _isLogin = false;
 
   var _currentIndex = 0;
 
@@ -26,14 +25,6 @@ class NavigatorState extends State<NavigatorBar> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     _loadLoginState();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      _loadLoginState();
-    }
   }
 
   @override
@@ -54,7 +45,9 @@ class NavigatorState extends State<NavigatorBar> with WidgetsBindingObserver {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) => _isLogin ? MyPage() : LoginPage()));
+                          builder: (_) => LoginStateManager.isLogin
+                              ? MyPage()
+                              : LoginPage()));
                 })
           ],
         ),
@@ -131,11 +124,9 @@ class NavigatorState extends State<NavigatorBar> with WidgetsBindingObserver {
 
   void _loadLoginState() async {
     var sp = await SharedPreferences.getInstance();
-    setState(() {
-      _isLogin = sp.getBool('isLogin');
-      if (_isLogin == null) {
-        _isLogin = false;
-      }
-    });
+    var isLogin = sp.getBool('isLogin');
+    if (isLogin != null) {
+      LoginStateManager.isLogin = isLogin;
+    }
   }
 }

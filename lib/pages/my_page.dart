@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/bean/coin_bean.dart';
+import 'package:flutter_wanandroid/data_manager.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -197,6 +198,7 @@ class MyPageState extends State<MyPage> {
 
   void _logout() async {
     var sharedPreferences = await SharedPreferences.getInstance();
+    LoginStateManager.isLogin = false;
     sharedPreferences.setBool('isLogin', false);
     Navigator.pop(context);
   }
