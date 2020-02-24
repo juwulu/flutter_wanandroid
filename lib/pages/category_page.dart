@@ -46,7 +46,8 @@ class NavigatorPageState extends State<NavigatorPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (_) => CategoryListPage(
-                                        id: child.id,title: child.name,
+                                        id: child.id,
+                                        title: child.name,
                                       )));
                         },
                       ))

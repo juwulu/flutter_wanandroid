@@ -32,7 +32,7 @@ class NavigatorState extends State<NavigatorBar> {
     return Scaffold(
         appBar: AppBar(
           title: Text('玩Android'),
-          elevation: 0,
+          elevation: _currentIndex == 0 ? 0 : 4,
           actions: <Widget>[
             IconButton(
                 icon: Icon(Icons.search),
