@@ -1,11 +1,16 @@
 import 'dart:convert';
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/bean/login_bean.dart';
 import 'package:flutter_wanandroid/pages/my_page.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../bean/login_bean.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -111,17 +116,23 @@ class LoginState extends State<LoginPage> {
       "username": _userController.text.trim(),
       "password": _pwdController.text.trim(),
     });
-    Response response = await Dio()
-        .post('https://www.wanandroid.com/user/login', data: formData);
+    Dio dio = Dio();
+    var directory = await getApplicationDocumentsDirectory();
+    dio.interceptors.add(CookieManager(PersistCookieJar(dir: directory.path)));
+    Response response =
+        await dio.post('https://www.wanandroid.com/user/login', data: formData);
     var loginBean = LoginBean.fromJson(json.decode(response.toString()));
-    updateLoginState(loginBean.errorCode);
+    print(response.toString());
+    updateLoginState(loginBean);
   }
 
   void _goRegister() {}
 
-  void updateLoginState(int errorCode) async {
+  void updateLoginState(LoginBean loginBean) async {
     var sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setBool('isLogin', errorCode == 0);
+    sharedPreferences.setBool('isLogin', loginBean.errorCode == 0);
+    sharedPreferences.setString('nickname', loginBean.data.nickname);
+    sharedPreferences.setInt('id', loginBean.data.id);
     print('登录成功');
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (_) => MyPage()));

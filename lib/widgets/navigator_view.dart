@@ -13,7 +13,7 @@ class NavigatorBar extends StatefulWidget {
   NavigatorState createState() => NavigatorState();
 }
 
-class NavigatorState extends State<NavigatorBar> {
+class NavigatorState extends State<NavigatorBar> with WidgetsBindingObserver {
   static const titles = ['首页', '分类', '项目', '公众号'];
 
   bool _isLogin = false;
@@ -26,6 +26,14 @@ class NavigatorState extends State<NavigatorBar> {
   void initState() {
     super.initState();
     _loadLoginState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      _loadLoginState();
+    }
   }
 
   @override
@@ -125,6 +133,9 @@ class NavigatorState extends State<NavigatorBar> {
     var sp = await SharedPreferences.getInstance();
     setState(() {
       _isLogin = sp.getBool('isLogin');
+      if (_isLogin == null) {
+        _isLogin = false;
+      }
     });
   }
 }
