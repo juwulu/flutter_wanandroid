@@ -6,6 +6,7 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/bean/coin_bean.dart';
 import 'package:flutter_wanandroid/data_manager.dart';
+import 'package:flutter_wanandroid/pages/my/my_favorite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,28 +63,36 @@ class MyPageState extends State<MyPage> {
             Padding(padding: EdgeInsets.only(top: 10)),
             Container(
               margin: EdgeInsets.all(10),
-              child: Card(
-                color: Colors.blueAccent,
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: Center(
-                  child: Container(
-                      height: 80,
-                      width: 100,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                          ),
-                          Padding(padding: EdgeInsets.all(2)),
-                          Text(
-                            '我的收藏',
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ],
-                      )),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyFavoritePage()));
+                },
+                child: Card(
+                  color: Colors.blueAccent,
+                  elevation: 10,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Center(
+                    child: Container(
+                        height: 80,
+                        width: 100,
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            ),
+                            Padding(padding: EdgeInsets.all(2)),
+                            Text(
+                              '我的收藏',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        )),
+                  ),
                 ),
               ),
             ),

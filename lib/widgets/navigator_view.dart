@@ -4,7 +4,7 @@ import 'package:flutter_wanandroid/pages/category_page.dart';
 import 'package:flutter_wanandroid/pages/home/wx_host_item.dart';
 import 'package:flutter_wanandroid/pages/home_page.dart';
 import 'package:flutter_wanandroid/pages/login/login_page.dart';
-import 'package:flutter_wanandroid/pages/my_page.dart';
+import 'package:flutter_wanandroid/pages/my/my_page.dart';
 import 'package:flutter_wanandroid/pages/project_page.dart';
 import 'package:flutter_wanandroid/widgets/search/search_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';

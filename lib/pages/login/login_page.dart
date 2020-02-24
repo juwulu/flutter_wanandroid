@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/bean/login_bean.dart';
 import 'package:flutter_wanandroid/data_manager.dart';
-import 'package:flutter_wanandroid/pages/my_page.dart';
+import 'package:flutter_wanandroid/pages/my/my_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
