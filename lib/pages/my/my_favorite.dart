@@ -8,6 +8,7 @@ import 'package:flutter_wanandroid/bean/favorite_bean.dart';
 import 'dart:convert';
 
 import 'package:flutter_wanandroid/widgets/browser.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 
 class MyFavoritePage extends StatefulWidget {
@@ -78,30 +79,39 @@ class MyFavoriteState extends State<MyFavoritePage> {
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
+              alignment: AlignmentDirectional.center,
               children: <Widget>[
-                Stack(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Align(
                         alignment: FractionalOffset.centerLeft,
                         child: Text(
-                          _article.chapterName,
+                          '${_article.chapterName} ${_article.niceDate}',
                           style: TextStyle(color: Colors.blue),
                         )),
-                    Align(
-                      alignment: FractionalOffset.centerRight,
-                      child: Text(_article.niceDate),
-                    )
+                    Text(
+                      _article.title,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
-                Text(
-                  _article.title,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                ),
+                Positioned(
+                  right: 0,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                    ),
+                    onPressed: () {
+                      _removeFavorite(_article);
+                    },
+                  ),
+                )
               ],
             ),
           ),
@@ -114,9 +124,36 @@ class MyFavoriteState extends State<MyFavoritePage> {
     );
   }
 
-  Widget _getBody() => ListView.builder(
-        itemCount: _favorites.length,
-        itemBuilder: (context, index) => _getListItem(index),
-        controller: _scrollController,
-      );
+  Widget _getBody() => _favorites.length == 0
+      ? Center(
+          child: Text('暂无收藏'),
+        )
+      : ListView.builder(
+          itemCount: _favorites.length,
+          itemBuilder: (context, index) => _getListItem(index),
+          controller: _scrollController,
+        );
+
+  void _removeFavorite(Datas article) async {
+    Dio dio = Dio();
+    Directory directory = await getApplicationDocumentsDirectory();
+    dio.interceptors.add(CookieManager(PersistCookieJar(dir: directory.path)));
+    Response response = await dio.post(
+        'https://www.wanandroid.com/lg/uncollect/${article.id}/json?originId=-1');
+    RemoveBean removeBean =
+        RemoveBean.fromJson(json.decode(response.toString()));
+    if (removeBean.errorCode == 0) {
+      setState(() {
+        _favorites.remove(article);
+      });
+      Fluttertoast.showToast(
+          msg: "取消收藏成功",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
 }
