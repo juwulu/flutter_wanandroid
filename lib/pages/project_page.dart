@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,9 @@ class ProjectPageState extends State<ProjectPage> {
     });
   }
 
+  Color _getRandomColor() => Color.fromARGB(255, Random.secure().nextInt(255),
+      Random.secure().nextInt(255), Random.secure().nextInt(255));
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -48,14 +52,16 @@ class ProjectPageState extends State<ProjectPage> {
                                   title: projectType.name,
                                 )));
                   },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
+                  child: Card(
+                    color: _getRandomColor(),
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
                     child: Container(
-                      color: Colors.blue,
                       alignment: Alignment.center,
                       child: Text(
                         projectType.name,
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16, color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
                     ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -35,12 +36,20 @@ class NavigatorPageState extends State<NavigatorPage> {
         title: Text(_categories[index].name),
         children: [
           Container(
+            padding: EdgeInsets.only(left: 15),
+            alignment: Alignment.topLeft,
             child: Wrap(
               spacing: 5,
               children: _categories[index]
                   .children
                   .map((child) => ActionChip(
-                        label: Text(child.name),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
+                        backgroundColor: _getRandomColor(),
+                        label: Text(
+                          child.name,
+                          style: TextStyle(color: Colors.white),
+                        ),
                         onPressed: () {
                           Navigator.push(
                               context,
@@ -59,4 +68,7 @@ class NavigatorPageState extends State<NavigatorPage> {
       itemCount: _categories.length,
     );
   }
+
+  Color _getRandomColor() => Color.fromARGB(255, Random.secure().nextInt(255),
+      Random.secure().nextInt(255), Random.secure().nextInt(255));
 }

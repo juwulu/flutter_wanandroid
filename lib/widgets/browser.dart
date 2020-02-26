@@ -21,9 +21,13 @@ class BrowserState extends State<Browser> {
   String url;
   String title;
   bool isCollected;
-  bool isPageFinished = false;
 
   BrowserState(this.id, this.url, this.title, this.isCollected);
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +35,10 @@ class BrowserState extends State<Browser> {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: isPageFinished
-          ? WebView(
-              onPageFinished: (url) {
-                setState(() {
-                  isPageFinished = true;
-                });
-              },
-              initialUrl: url,
-              javascriptMode: JavascriptMode.unrestricted,
-            )
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
+      body: WebView(
+        initialUrl: url,
+        javascriptMode: JavascriptMode.unrestricted,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           CollectUtil.collect(id, _collectCallback);
